@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+
+    # Postgresql container
+    postgresql:
+        image: postgres
+        environment:
+            POSTGRES_DB: ${POSTGRES_DB:-movie_ranking}
+            POSTGRES_USER: ${POSTGRES_USER:-django}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vfhgd8iSsxj33mDAYF}
+
+    # API container
+    django-app:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        env_file:
+            - ./api.env
+        # Open http port
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/code
+        depends_on:
+            - postgresql
+
+
+    # Nginx container
+    nginx:
+        restart: always
+        container_name: nginx_server
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile
+        depends_on:
+            - django-app
+            - postgresql
+        ports:
+            - "0.0.0.0:80:80"
+
