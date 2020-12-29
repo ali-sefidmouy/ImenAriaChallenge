@@ -1,4 +1,4 @@
-Hi! This is the simple movie CRUD api to demonstrate my skillset.
+Hi! This is a simple movie CRUD api to demonstrate my skillset in the Django world.
 
 ========================================
 
